@@ -1,5 +1,5 @@
 Analysis & Synthesis report for UNICICLO_RV
-Mon Jun 24 18:02:40 2019
+Wed Jul 10 16:39:51 2019
 Quartus II 64-Bit Version 13.0.0 Build 156 04/24/2013 SJ Web Edition
 
 
@@ -36,7 +36,7 @@ applicable agreement for further details.
 +---------------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                                    ;
 +------------------------------------+--------------------------------------------+
-; Analysis & Synthesis Status        ; Failed - Mon Jun 24 18:02:40 2019          ;
+; Analysis & Synthesis Status        ; Failed - Wed Jul 10 16:39:51 2019          ;
 ; Quartus II 64-Bit Version          ; 13.0.0 Build 156 04/24/2013 SJ Web Edition ;
 ; Revision Name                      ; UNICICLO_RV                                ;
 ; Top-level Entity Name              ; UNICICLO_RV                                ;
@@ -154,9 +154,21 @@ Parallel compilation was disabled, but you have multiple processors available. E
 Info: *******************************************************************
 Info: Running Quartus II 64-Bit Analysis & Synthesis
     Info: Version 13.0.0 Build 156 04/24/2013 SJ Web Edition
-    Info: Processing started: Mon Jun 24 18:02:39 2019
+    Info: Processing started: Wed Jul 10 16:39:49 2019
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off UNICICLO_RV -c UNICICLO_RV
 Warning (20028): Parallel compilation is not licensed and has been disabled
+Info (12021): Found 2 design units, including 1 entities, in source file pc.vhd
+    Info (12022): Found design unit 1: PC-behavioral
+    Info (12023): Found entity 1: PC
+Info (12021): Found 2 design units, including 1 entities, in source file mux2x1.vhd
+    Info (12022): Found design unit 1: mux2x1-behavioral
+    Info (12023): Found entity 1: mux2x1
+Info (12021): Found 2 design units, including 1 entities, in source file memdados.vhd
+    Info (12022): Found design unit 1: memdados-SYN
+    Info (12023): Found entity 1: memDados
+Info (12021): Found 2 design units, including 1 entities, in source file memins.vhd
+    Info (12022): Found design unit 1: memins-SYN
+    Info (12023): Found entity 1: memIns
 Info (12021): Found 1 design units, including 0 entities, in source file xregs_pkg.vhd
     Info (12022): Found design unit 1: xregs_pkg
 Info (12021): Found 2 design units, including 1 entities, in source file xregs.vhd
@@ -172,18 +184,17 @@ Info (12021): Found 1 design units, including 0 entities, in source file imm_pkg
 Info (12021): Found 2 design units, including 1 entities, in source file genimm32.vhd
     Info (12022): Found design unit 1: genImm32-behavioral
     Info (12023): Found entity 1: genImm32
-Error (10500): VHDL syntax error at UNICICLO_RV.vhd(11) near text ")";  expecting an identifier, or "constant", or "file", or "signal", or "variable" File: C:/Users/Alec Ryo/Desktop/Trabalho_Final_OAC/UNICICLO_RV.vhd Line: 11
-Error (10500): VHDL syntax error at UNICICLO_RV.vhd(22) near text "COMPONENT";  expecting ";", or an identifier ("component" is a reserved keyword), or "entity" File: C:/Users/Alec Ryo/Desktop/Trabalho_Final_OAC/UNICICLO_RV.vhd Line: 22
-Error (10396): VHDL syntax error at UNICICLO_RV.vhd(40): name used in construct must match previously specified name "UNICICLO_RV" File: C:/Users/Alec Ryo/Desktop/Trabalho_Final_OAC/UNICICLO_RV.vhd Line: 40
-Error (10523): Ignored construct UNICICLO_RV at UNICICLO_RV.vhd(9) due to previous errors File: C:/Users/Alec Ryo/Desktop/Trabalho_Final_OAC/UNICICLO_RV.vhd Line: 9
+Error (10500): VHDL syntax error at UNICICLO_RV.vhd(11) near text ")";  expecting an identifier, or "constant", or "file", or "signal", or "variable" File: C:/Users/Alec Ryo/Desktop/Uniciclo/Uniciclo/UNICICLO_RV.vhd Line: 11
+Error (10500): VHDL syntax error at UNICICLO_RV.vhd(19) near text "COMPONENT";  expecting ";", or an identifier ("component" is a reserved keyword), or "entity" File: C:/Users/Alec Ryo/Desktop/Uniciclo/Uniciclo/UNICICLO_RV.vhd Line: 19
+Error (10396): VHDL syntax error at UNICICLO_RV.vhd(78): name used in construct must match previously specified name "UNICICLO_RV" File: C:/Users/Alec Ryo/Desktop/Uniciclo/Uniciclo/UNICICLO_RV.vhd Line: 78
+Error (10523): Ignored construct UNICICLO_RV at UNICICLO_RV.vhd(9) due to previous errors File: C:/Users/Alec Ryo/Desktop/Uniciclo/Uniciclo/UNICICLO_RV.vhd Line: 9
 Info (12021): Found 0 design units, including 0 entities, in source file uniciclo_rv.vhd
-Error (10500): VHDL syntax error at adder32.vhd(10) near text ")"; mismatched closing parenthesis  File: C:/Users/Alec Ryo/Desktop/Trabalho_Final_OAC/adder32.vhd Line: 10
-Error (10500): VHDL syntax error at adder32.vhd(10) near text ";";  expecting "end", or "begin", or a declaration statement File: C:/Users/Alec Ryo/Desktop/Trabalho_Final_OAC/adder32.vhd Line: 10
-Error (10523): Ignored construct adder32 at adder32.vhd(6) due to previous errors File: C:/Users/Alec Ryo/Desktop/Trabalho_Final_OAC/adder32.vhd Line: 6
-Info (12021): Found 0 design units, including 0 entities, in source file adder32.vhd
-Error: Quartus II 64-Bit Analysis & Synthesis was unsuccessful. 7 errors, 1 warning
+Info (12021): Found 2 design units, including 1 entities, in source file adder32.vhd
+    Info (12022): Found design unit 1: adder32-behavioral
+    Info (12023): Found entity 1: adder32
+Error: Quartus II 64-Bit Analysis & Synthesis was unsuccessful. 4 errors, 1 warning
     Error: Peak virtual memory: 4628 megabytes
-    Error: Processing ended: Mon Jun 24 18:02:41 2019
+    Error: Processing ended: Wed Jul 10 16:39:51 2019
     Error: Elapsed time: 00:00:02
     Error: Total CPU time (on all processors): 00:00:01
 

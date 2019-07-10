@@ -1,5 +1,5 @@
 Flow report for UNICICLO_RV
-Mon Jun 24 18:02:40 2019
+Wed Jul 10 16:39:51 2019
 Quartus II 64-Bit Version 13.0.0 Build 156 04/24/2013 SJ Web Edition
 
 
@@ -40,7 +40,7 @@ applicable agreement for further details.
 +---------------------------------------------------------------------------------+
 ; Flow Summary                                                                    ;
 +------------------------------------+--------------------------------------------+
-; Flow Status                        ; Flow Failed - Mon Jun 24 18:02:40 2019     ;
+; Flow Status                        ; Flow Failed - Wed Jul 10 16:39:51 2019     ;
 ; Quartus II 64-Bit Version          ; 13.0.0 Build 156 04/24/2013 SJ Web Edition ;
 ; Revision Name                      ; UNICICLO_RV                                ;
 ; Top-level Entity Name              ; UNICICLO_RV                                ;
@@ -62,7 +62,7 @@ applicable agreement for further details.
 +-------------------+---------------------+
 ; Option            ; Setting             ;
 +-------------------+---------------------+
-; Start date & time ; 06/24/2019 18:02:39 ;
+; Start date & time ; 07/10/2019 16:39:50 ;
 ; Main task         ; Compilation         ;
 ; Revision Name     ; UNICICLO_RV         ;
 +-------------------+---------------------+
@@ -73,7 +73,7 @@ applicable agreement for further details.
 +-------------------------------------+--------------------------------+---------------+-------------+----------------+
 ; Assignment Name                     ; Value                          ; Default Value ; Entity Name ; Section Id     ;
 +-------------------------------------+--------------------------------+---------------+-------------+----------------+
-; COMPILER_SIGNATURE_ID               ; 40637553745774.156141015902472 ; --            ; --          ; --             ;
+; COMPILER_SIGNATURE_ID               ; 40637553745774.156278759007296 ; --            ; --          ; --             ;
 ; EDA_OUTPUT_DATA_FORMAT              ; Vhdl                           ; --            ; --          ; eda_simulation ;
 ; EDA_SIMULATION_TOOL                 ; ModelSim-Altera (VHDL)         ; <None>        ; --          ; --             ;
 ; PARTITION_COLOR                     ; 16764057                       ; --            ; --          ; Top            ;
@@ -88,8 +88,8 @@ applicable agreement for further details.
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
 ; Module Name          ; Elapsed Time ; Average Processors Used ; Peak Virtual Memory ; Total CPU Time (on all processors) ;
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
-; Analysis & Synthesis ; 00:00:01     ; 1.0                     ; 4628 MB             ; 00:00:01                           ;
-; Total                ; 00:00:01     ; --                      ; --                  ; 00:00:01                           ;
+; Analysis & Synthesis ; 00:00:02     ; 1.0                     ; 4628 MB             ; 00:00:01                           ;
+; Total                ; 00:00:02     ; --                      ; --                  ; 00:00:01                           ;
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
 
 
