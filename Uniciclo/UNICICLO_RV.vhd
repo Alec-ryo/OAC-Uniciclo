@@ -10,6 +10,8 @@ entity UNICICLO_RV is
 	port (
 		clk	: in std_logic;
 		saidapc   : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
+		saidainstrucao   : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
+		saidaimediato   : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
 		pcentrada   : in STD_LOGIC_VECTOR(31 DOWNTO 0)
 		);
 end UNICICLO_RV; 
@@ -26,7 +28,10 @@ architecture behavioral of UNICICLO_RV is
 	signal saida_ULA : std_logic_vector(31 downto 0);
 	signal mem_to_write : std_logic_vector(31 downto 0);
 	signal saida_mem : std_logic_vector(31 downto 0);
+	signal imediato : signed(31 downto 0);
+	signal endJump : std_logic_vector(31 downto 0);
 	signal branch: std_logic;
+	signal zero: std_logic;
 	signal memRead: std_logic;
 	signal memToReg: std_logic;
 	signal ALUOp: std_logic_vector(1 downto 0);
@@ -90,10 +95,41 @@ architecture behavioral of UNICICLO_RV is
 				wren		: IN STD_LOGIC ;
 				q		: OUT STD_LOGIC_VECTOR (31 DOWNTO 0));
 	end component;
+	
+	component genImm32 is
+		port (
+				instr:   in  std_logic_vector(31 downto 0);
+				imm32:	out signed(31 downto 0)
+				);
+	end component; 
+	
+	component mux2x1 is
+		port (a, b : in  std_logic_vector(31 downto 0);
+				e	  : in std_logic;
+				ro   :   out std_logic_vector(31 downto 0));
+	end component;
+	
+	component control is
+		port (
+				a 				: in  std_logic_vector(6 downto 0);
+				branch   	: out std_logic;
+				memRead		: out std_logic;
+				memToReg		: out std_logic;
+				ALUOp			: out std_logic_vector(1 downto 0);
+				memWrite		: out std_logic;
+				ALUSrc		: out std_logic;
+				regWrite		: out std_logic
+		);
+	end component;
 
 begin
-	igh : PC PORT MAP (d => pcentrada, clr => '0', clk => clk, q => PCin);
-	i2  : memIns PORT MAP (address => pcIN(9 downto 2), clock => clk, data => X"00000000", wren => '0', q => saidapc);
+	igh: 	PC PORT MAP (d => pcentrada, clr => '0', clk => clk, q => pcIN);
+	i3:	adder32 PORT MAP (a => pcIN, b => X"00000004", ro=>PCmais4);
+	i2:	memIns PORT MAP (address => pcIN(9 downto 2), clock => clk, data => X"00000005", wren => '0', q => instrucao);
+	i7: 	control PORT MAP (a => instrucao(31 downto 25), branch => branch, memRead => memRead, memToReg => memToReg, ALUOp => ALUOp, memWrite => memWrite, ALUSrc => ALUSrc, regWrite => regWrite);
+	i4:	genImm32 PORT MAP (instr => instrucao, imm32 => imediato);
+	i5:	adder32 PORT MAP (a => PCmais4, b => std_logic_vector(imediato), ro => endJump);
+	i6:	mux2x1 PORT MAP (a => PCmais4, b => endJump, e => '1', ro => PCmais4);
 	--i3 : adder32 PORT MAP (a => pcIN, b => X"00000004", ro=>saidapc);
 	
 end behavioral;
