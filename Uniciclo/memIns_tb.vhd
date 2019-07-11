@@ -31,7 +31,7 @@ ARCHITECTURE tb_arch OF memIns_tb IS
 		wait for 4 ps;
 		
 		clk <= '0'; 
-		pcentrada <= X"00000002";
+		pcentrada <= X"00000006";
 		wait for 4 ps;
 		clk <= '1';
 		wait for 4 ps;

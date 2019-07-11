@@ -40,16 +40,14 @@ architecture behavioral of UNICICLO_RV is
 				 d: 	IN STD_LOGIC_VECTOR(31 DOWNTO 0);
 				 clr: IN STD_LOGIC; -- clear.
 				 clk: IN STD_LOGIC; -- clock.
-				 q: 	OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
-				);
+				 q: 	OUT STD_LOGIC_VECTOR(31 DOWNTO 0));
 	end component;
 	
 	component adder32 
 		port (
 				a:			in STD_LOGIC_VECTOR(31 DOWNTO 0);
 				b: 		in STD_LOGIC_VECTOR(31 DOWNTO 0);
-				ro: 		OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
-				);
+				ro: 		OUT STD_LOGIC_VECTOR(31 DOWNTO 0));
 	end component;
 	
 	component memIns
@@ -58,13 +56,44 @@ architecture behavioral of UNICICLO_RV is
 				clock		: IN STD_LOGIC;
 				data		: IN STD_LOGIC_VECTOR (31 DOWNTO 0);
 				wren		: IN STD_LOGIC ;
-				q			: OUT STD_LOGIC_VECTOR (31 DOWNTO 0)
-				);
+				q			: OUT STD_LOGIC_VECTOR (31 DOWNTO 0));
+	end component;
+	
+	component XREGS
+		port (
+				clk, wren, rst : in std_logic;
+				rs1, rs2, rd : in std_logic_vector(4 downto 0);
+				data : in std_logic_vector(31 downto 0);
+				ro1, ro2 : out std_logic_vector(31 downto 0));
+	end component;
+	
+	component mux2x1
+		port (
+				a, b : in  std_logic_vector(31 downto 0);
+				e	  : in std_logic;
+				ro   :   out std_logic_vector(31 downto 0));
+	end component;
+	
+	component ULA_RV
+		port (
+				opcode:  in  ULA_OP;          
+				A, B: 	in  std_logic_vector(31 downto 0);           
+				Z: 		out std_logic_vector(31 downto 0);          
+				zero: 	out std_logic);
+	end component;
+	
+	component memDados
+		port (
+				address		: IN STD_LOGIC_VECTOR (7 DOWNTO 0);
+				clock		: IN STD_LOGIC  := '1';
+				data		: IN STD_LOGIC_VECTOR (31 DOWNTO 0);
+				wren		: IN STD_LOGIC ;
+				q		: OUT STD_LOGIC_VECTOR (31 DOWNTO 0));
 	end component;
 
 begin
 	igh : PC PORT MAP (d => pcentrada, clr => '0', clk => clk, q => PCin);
-	i2  : memIns PORT MAP (address => pcIN(9 downto 2), clock => clk, data => X"00000005", wren => '0', q => saidapc);
+	i2  : memIns PORT MAP (address => pcIN(9 downto 2), clock => clk, data => X"00000000", wren => '0', q => saidapc);
 	--i3 : adder32 PORT MAP (a => pcIN, b => X"00000004", ro=>saidapc);
 	
 end behavioral;
