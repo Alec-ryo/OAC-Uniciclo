@@ -26,7 +26,7 @@ architecture behavioral of UNICICLO_RV is
 	signal dado2 : std_logic_vector(31 downto 0);
 	signal imm : std_logic_vector(31 downto 0);
 	signal saida_ULA : std_logic_vector(31 downto 0);
-	signal mem_to_write : std_logic_vector(31 downto 0);
+	signal mem_to_reg : std_logic_vector(31 downto 0);
 	signal saida_mem : std_logic_vector(31 downto 0);
 	signal imediato : std_logic_vector(31 downto 0);
 	signal endJump : std_logic_vector(31 downto 0);
@@ -35,10 +35,12 @@ architecture behavioral of UNICICLO_RV is
 	signal memRead: std_logic;
 	signal memToReg: std_logic;
 	signal ALUOp: std_logic_vector(1 downto 0);
+	signal ALUOp_MD: ULA_OP;
 	signal memWrite: std_logic;
 	signal ALUSrc: std_logic;
 	signal regWrite: std_logic;
 	signal soma4: std_logic_vector(31 downto 0);
+	signal rs2OUimm: std_logic_vector(31 downto 0);
 	
 	component PC 
 		port (
@@ -115,17 +117,24 @@ architecture behavioral of UNICICLO_RV is
 				regWrite		: out std_logic
 		);
 	end component;
-
+		
 begin
-	igh: 	PC PORT MAP (d => pcentrada, clr => '0', clk => clk, q => pcIN);
-	i3:	adder32 PORT MAP (a => pcIN, b => X"00000004", ro=>PCmais4);
-	i2:	memIns PORT MAP (address => pcIN(9 downto 2), clock => clk, data => X"00000005", wren => '0', q => instrucao);
-	i7: control PORT MAP (a => instrucao(31 downto 25), branch => branch, memRead => memRead, memToReg => memToReg, ALUOp => ALUOp, memWrite => memWrite, ALUSrc => ALUSrc, regWrite => regWrite);
-	i4:	genImm32 PORT MAP (instr => instrucao, imm32 => imediato);
-	i5:	adder32 PORT MAP (a => PCmais4, b => imediato, ro => endJump);
-	i6:	mux2x1 PORT MAP (a => PCmais4, b => endJump, e => '1', ro => saidapc);
+
+	--igh: 	PC PORT MAP (d => pcentrada, clr => '0', clk => clk, q => pcIN);	
+	--i3:	adder32 PORT MAP (a => pcIN, b => X"00000004", ro=>PCmais4);
+	--i2:	memIns PORT MAP (address => pcIN(9 downto 2), clock => clk, data => X"00000000", wren => '0', q => saidapc);
+	--i7:	control PORT MAP (a => instrucao(31 downto 25), branch => branch, memRead => memRead, memToReg => memToReg, ALUOp => ALUOp, memWrite => memWrite, ALUSrc => ALUSrc, regWrite => regWrite);
+	--i4:	genImm32 PORT MAP (instr => instrucao, imm32 => imediato);
+	--i5:	adder32 PORT MAP (a => PCmais4, b => imediato, ro => endJump);
+	--i6:	mux2x1 PORT MAP (a => PCmais4, b => endJump, e => '1', ro => saidapc);
 	--i3 : adder32 PORT MAP (a => pcIN, b => X"00000004", ro=>saidapc);
 	
+   r1 : memIns PORT MAP(address=>pcentrada(7 downto 0),clock=>clk,data=>X"00000000",wren=>'0',q=>instrucao);
+	r2 : XREGS PORT MAP(clk=>clk, wren=>'0', rst=>'0', rs1=>instrucao(19 downto 15), rs2=>instrucao(24 downto 20), rd=>instrucao(11 downto 7), data=>saida_mem, ro1=>saidapc, ro2=>dado2);
+	r3 : mux2x1 PORT MAP(a=>dado2,b=>imediato,e=>'0',ro=>rs2OUimm);
+	r4 : ULA_RV PORT MAP(opcode=>ADD_OP, A=>dado1, B=>rs2OUimm, Z=>saida_ULA, zero=>zero);
+	r5 : memDados PORT MAP(address=>saida_ULA(7 downto 0), data=>dado2, wren=>memWrite, q=>saida_mem);
+	--r6 : mux2x1 PORT MAP(a=>saida_ULA,b=>saida_mem,e=>'0',ro=>saidapc);
 	
 end behavioral;
 

@@ -25,22 +25,23 @@ ARCHITECTURE tb_arch OF memIns_tb IS
 	init : process
 	BEGIN
 		clk <= '0'; 
-		pcentrada <= X"00000011"; 
+		pcentrada <= X"00000000"; 
 		wait for 4 ps;
 		clk <= '1';
 		wait for 4 ps;
 		
 		clk <= '0'; 
-		pcentrada <= X"00000022";
+		pcentrada <= X"00000001";
 		wait for 4 ps;
 		clk <= '1';
 		wait for 4 ps;
 		
 		clk <= '0';
-		pcentrada <= X"00000033";
+		pcentrada <= X"00000004";
 		wait for 4 ps;
 		clk <= '1'; 
 		wait for 4 ps;
+		
 
 	END PROCESS init; 
 end tb_arch; 
