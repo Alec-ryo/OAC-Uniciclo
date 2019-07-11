@@ -64,8 +64,8 @@ architecture behavioral of UNICICLO_RV is
 
 begin
 	igh : PC PORT MAP (d => pcentrada, clr => '0', clk => clk, q => PCin);
-	i2  : memIns PORT MAP (address => pcIN(9 downto 2), clock => clk, data => X"00000000", wren => '0', q => saida);
-	i3 : adder32 PORT MAP (a => pcIN, b => X"00000004", ro=>saidapc);
+	i2  : memIns PORT MAP (address => pcIN(9 downto 2), clock => clk, data => X"00000000", wren => '0', q => saidapc);
+	--i3 : adder32 PORT MAP (a => pcIN, b => X"00000004", ro=>saidapc);
 	
 end behavioral;
 
