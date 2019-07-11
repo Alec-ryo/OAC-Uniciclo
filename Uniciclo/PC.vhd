@@ -3,15 +3,23 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.std_logic_unsigned.all; 
 
-entity PC is
-	port (a  : in  std_logic_vector(31 downto 0);
-			ro : out std_logic_vector(31 downto 0));
-end PC;
+ENTITY PC IS PORT(
+    d   : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+    clr : IN STD_LOGIC; -- clear.
+    clk : IN STD_LOGIC; -- clock.
+    q   : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
+);
+END PC;
 
-architecture behavioral of PC is
+ARCHITECTURE arch OF PC IS
 
-begin
-
-	ro <= std_logic_vector(signed(a) + signed(b));
-	
-end behavioral;
+BEGIN
+    process(clk, clr)
+    begin
+        if clr = '1' then
+            q <= x"00000000";
+        elsif rising_edge(clk) then
+            q <= d;
+        end if;
+    end process;
+END arch;

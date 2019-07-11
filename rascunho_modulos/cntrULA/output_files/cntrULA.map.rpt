@@ -1,5 +1,5 @@
 Analysis & Synthesis report for cntrULA
-Wed Jul 10 16:03:12 2019
+Wed Jul 10 21:10:37 2019
 Quartus II 64-Bit Version 13.0.0 Build 156 04/24/2013 SJ Web Edition
 
 
@@ -42,7 +42,7 @@ applicable agreement for further details.
 +---------------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                                    ;
 +------------------------------------+--------------------------------------------+
-; Analysis & Synthesis Status        ; Successful - Wed Jul 10 16:03:12 2019      ;
+; Analysis & Synthesis Status        ; Successful - Wed Jul 10 21:10:37 2019      ;
 ; Quartus II 64-Bit Version          ; 13.0.0 Build 156 04/24/2013 SJ Web Edition ;
 ; Revision Name                      ; cntrULA                                    ;
 ; Top-level Entity Name              ; cntrULA                                    ;
@@ -224,8 +224,8 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 +--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------+
 ; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output ;
 +--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------+
-; 3:1                ; 2 bits    ; 4 LEs         ; 2 LEs                ; 2 LEs                  ; No         ; |cntrULA|Mux16             ;
-; 5:1                ; 2 bits    ; 6 LEs         ; 6 LEs                ; 0 LEs                  ; No         ; |cntrULA|Mux10             ;
+; 3:1                ; 2 bits    ; 4 LEs         ; 2 LEs                ; 2 LEs                  ; No         ; |cntrULA|Mux2              ;
+; 5:1                ; 2 bits    ; 6 LEs         ; 6 LEs                ; 0 LEs                  ; No         ; |cntrULA|Mux0              ;
 +--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------+
 
 
@@ -244,7 +244,7 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 Info: *******************************************************************
 Info: Running Quartus II 64-Bit Analysis & Synthesis
     Info: Version 13.0.0 Build 156 04/24/2013 SJ Web Edition
-    Info: Processing started: Wed Jul 10 16:03:09 2019
+    Info: Processing started: Wed Jul 10 21:10:35 2019
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off cntrULA -c cntrULA
 Warning (20028): Parallel compilation is not licensed and has been disabled
 Info (12021): Found 1 design units, including 0 entities, in source file rv_pkg.vhd
@@ -252,6 +252,9 @@ Info (12021): Found 1 design units, including 0 entities, in source file rv_pkg.
 Info (12021): Found 2 design units, including 1 entities, in source file cntrula.vhd
     Info (12022): Found design unit 1: cntrULA-arch
     Info (12023): Found entity 1: cntrULA
+Info (12021): Found 2 design units, including 1 entities, in source file cntrula_tb.vhd
+    Info (12022): Found design unit 1: cntrULA_tb-tb_arch
+    Info (12023): Found entity 1: cntrULA_tb
 Info (12127): Elaborating entity "cntrULA" for the top level hierarchy
 Warning (13024): Output pins are stuck at VCC or GND
     Warning (13410): Pin "aluctr.NOR_OP" is stuck at GND
@@ -273,9 +276,9 @@ Info (21057): Implemented 43 device resources after synthesis - the final resour
     Info (21059): Implemented 15 output pins
     Info (21061): Implemented 16 logic cells
 Info: Quartus II 64-Bit Analysis & Synthesis was successful. 0 errors, 14 warnings
-    Info: Peak virtual memory: 4627 megabytes
-    Info: Processing ended: Wed Jul 10 16:03:12 2019
-    Info: Elapsed time: 00:00:03
+    Info: Peak virtual memory: 4646 megabytes
+    Info: Processing ended: Wed Jul 10 21:10:37 2019
+    Info: Elapsed time: 00:00:02
     Info: Total CPU time (on all processors): 00:00:02
 
 

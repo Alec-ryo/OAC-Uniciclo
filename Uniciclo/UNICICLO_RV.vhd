@@ -84,6 +84,8 @@ begin
 	signal saida_ULA : std_logic_vector(31 downto 0);
 	signal mem_to_write : std_logic_vector(31 downto 0);
 
+	--sinais de controle
+	
 	
 	
 end behavioral;
