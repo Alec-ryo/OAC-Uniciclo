@@ -12,7 +12,6 @@ entity UNICICLO_RV is
 		saidapc   : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
 		saidainstrucao   : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
 		saidaimediato   : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
-		pcentrada   : in STD_LOGIC_VECTOR(31 DOWNTO 0);
 		pcmemIns : OUT std_logic_vector(31 downto 0);
 		saidabranch: OUT std_logic;
 		saidazero: OUT std_logic;
@@ -28,19 +27,19 @@ end UNICICLO_RV;
 architecture behavioral of UNICICLO_RV is
 	
 	--declaracao de sinais
-	signal PCmais4 : std_logic_vector(31 downto 0);
+	signal PCmais4 : std_logic_vector(31 downto 0) := X"00000000";
 	signal PCfinal : std_logic_vector(31 downto 0) := X"00000000";
 	signal PCend : std_logic_vector(31 downto 0) := X"00000000";
-	signal pcIN : std_logic_vector(31 downto 0);
-	signal instrucao : std_logic_vector(31 downto 0);
-	signal dado1 : std_logic_vector(31 downto 0);
-	signal dado2 : std_logic_vector(31 downto 0);
-	signal imm : std_logic_vector(31 downto 0);
-	signal saida_ULA : std_logic_vector(31 downto 0);
-	signal mem_to_write : std_logic_vector(31 downto 0);
-	signal saida_mem : std_logic_vector(31 downto 0);
-	signal imediato : std_logic_vector(31 downto 0);
-	signal endJump : std_logic_vector(31 downto 0);
+	signal pcIN : std_logic_vector(31 downto 0) := X"00000000";
+	signal instrucao : std_logic_vector(31 downto 0) := X"00000000";
+	signal dado1 : std_logic_vector(31 downto 0) := X"00000000";
+	signal dado2 : std_logic_vector(31 downto 0) := X"00000000";
+	signal imm : std_logic_vector(31 downto 0) := X"00000000";
+	signal saida_ULA : std_logic_vector(31 downto 0) := X"00000000";
+	signal mem_to_write : std_logic_vector(31 downto 0) := X"00000000";
+	signal saida_mem : std_logic_vector(31 downto 0) := X"00000000";
+	signal imediato : std_logic_vector(31 downto 0) := X"00000000";
+	signal endJump : std_logic_vector(31 downto 0) := X"00000000";
 	signal branch: std_logic;
 	signal zero: std_logic;
 	signal memRead: std_logic;
@@ -49,7 +48,7 @@ architecture behavioral of UNICICLO_RV is
 	signal memWrite: std_logic;
 	signal ALUSrc: std_logic;
 	signal regWrite: std_logic;
-	signal soma4: std_logic_vector(31 downto 0);
+	signal soma4: std_logic_vector(31 downto 0) := X"00000000";
 	
 	component PC 
 		port (
