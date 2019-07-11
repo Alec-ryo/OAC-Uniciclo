@@ -13,6 +13,15 @@ ARCHITECTURE tb_arch OF pcMais4_tb IS
 	signal saidainstrucao   : STD_LOGIC_VECTOR(31 DOWNTO 0);
 	signal saidaimediato   : STD_LOGIC_VECTOR(31 DOWNTO 0);
 	signal pcentrada   : STD_LOGIC_VECTOR(31 DOWNTO 0);
+	signal pcmemIns : std_logic_vector(31 downto 0);
+	signal saidabranch: std_logic;
+	signal saidazero: std_logic;
+	signal saidamemRead: std_logic;
+	signal saidamemToReg: std_logic;
+	signal saidaALUOp: std_logic_vector(1 downto 0);
+	signal saidamemWrite: std_logic;
+	signal saidaALUSrc: std_logic;
+	signal saidaregWrite: std_logic;
 	
 	component UNICICLO_RV 
 		port (
@@ -20,21 +29,81 @@ ARCHITECTURE tb_arch OF pcMais4_tb IS
 				saidapc: 		OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
 				saidainstrucao   : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
 				saidaimediato   : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
-				pcentrada:	in STD_LOGIC_VECTOR(31 DOWNTO 0)
+				pcentrada:	in STD_LOGIC_VECTOR(31 DOWNTO 0);
+				pcmemIns : OUT std_logic_vector(31 downto 0);
+				saidabranch: OUT std_logic;
+				saidazero: OUT std_logic;
+				saidamemRead: OUT std_logic;
+				saidamemToReg: OUT std_logic;
+				saidaALUOp: OUT std_logic_vector(1 downto 0);
+				saidamemWrite: OUT std_logic;
+				saidaALUSrc: OUT std_logic;
+				saidaregWrite: OUT std_logic
 				);
 	end component;
 	
-	begin i1 : UNICICLO_RV PORT MAP (clk => clk, saidapc => saidapc, saidainstrucao => saidainstrucao, saidaimediato => saidaimediato, pcentrada => pcentrada);
+	begin i1 : UNICICLO_RV PORT MAP (
+	clk => clk, 
+	saidapc => saidapc, 
+	saidainstrucao => saidainstrucao, 
+	saidaimediato => saidaimediato, 
+	pcentrada => pcentrada,
+	pcmemIns => pcmemIns,
+	saidabranch => saidabranch,
+	saidazero => saidazero,
+	saidamemRead => saidamemRead,
+	saidamemToReg => saidamemToReg,
+	saidaALUOp => saidaALUOp,
+	saidamemWrite => saidamemWrite,
+	saidaALUSrc => saidaALUSrc,
+	saidaregWrite => saidaregWrite);
 	
 	init : process
 	BEGIN
-		clk <= '0'; pcentrada <= X"00000001";
+		clk <= '0'; 
+		pcentrada <= X"00000001";
 		wait for 4 ps;
-		clk <= '1'; pcentrada <= X"00000002";
+		clk <= '1';
 		wait for 4 ps;
-		clk <= '0'; pcentrada <= X"00000003";
+		clk <= '0'; 
+		pcentrada <= X"00000002";
 		wait for 4 ps;
-		clk <= '1'; pcentrada <= X"00000004";
+		clk <= '1';
+		wait for 4 ps;
+		clk <= '0'; 
+		pcentrada <= X"00000003";
+		wait for 4 ps;
+		clk <= '1';
+		wait for 4 ps;
+		clk <= '0'; 
+		pcentrada <= X"00000001";
+		wait for 4 ps;
+		clk <= '1';
+		wait for 4 ps;
+		clk <= '0'; 
+		pcentrada <= X"00000004";
+		wait for 4 ps;
+		clk <= '1';
+		wait for 4 ps;
+		clk <= '0'; 
+		pcentrada <= X"00000005";
+		wait for 4 ps;
+		clk <= '1';
+		wait for 4 ps;
+		clk <= '0'; 
+		pcentrada <= X"00000006";
+		wait for 4 ps;
+		clk <= '1';
+		wait for 4 ps;
+		clk <= '0'; 
+		pcentrada <= X"00000007";
+		wait for 4 ps;
+		clk <= '1';
+		wait for 4 ps;
+		clk <= '0'; 
+		pcentrada <= X"00000008";
+		wait for 4 ps;
+		clk <= '1';
 		wait for 4 ps;
 
 	END PROCESS init; 

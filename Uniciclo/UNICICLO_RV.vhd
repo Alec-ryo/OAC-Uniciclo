@@ -12,7 +12,16 @@ entity UNICICLO_RV is
 		saidapc   : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
 		saidainstrucao   : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
 		saidaimediato   : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
-		pcentrada   : in STD_LOGIC_VECTOR(31 DOWNTO 0)
+		pcentrada   : in STD_LOGIC_VECTOR(31 DOWNTO 0);
+		pcmemIns : OUT std_logic_vector(31 downto 0);
+		saidabranch: OUT std_logic;
+		saidazero: OUT std_logic;
+		saidamemRead: OUT std_logic;
+		saidamemToReg: OUT std_logic;
+		saidaALUOp: OUT std_logic_vector(1 downto 0);
+		saidamemWrite: OUT std_logic;
+		saidaALUSrc: OUT std_logic;
+		saidaregWrite: OUT std_logic
 		);
 end UNICICLO_RV; 
 
@@ -20,6 +29,8 @@ architecture behavioral of UNICICLO_RV is
 	
 	--declaracao de sinais
 	signal PCmais4 : std_logic_vector(31 downto 0);
+	signal PCfinal : std_logic_vector(31 downto 0) := X"00000000";
+	signal PCend : std_logic_vector(31 downto 0) := X"00000000";
 	signal pcIN : std_logic_vector(31 downto 0);
 	signal instrucao : std_logic_vector(31 downto 0);
 	signal dado1 : std_logic_vector(31 downto 0);
@@ -129,12 +140,37 @@ begin
 	--i6:	mux2x1 PORT MAP (a => PCmais4, b => endJump, e => '1', ro => saidapc);
 	--i3 : adder32 PORT MAP (a => pcIN, b => X"00000004", ro=>saidapc);
 	
-   r1 : memIns PORT MAP(address=>pcentrada(7 downto 0),clock=>clk,data=>X"00000000",wren=>'0',q=>instrucao);
-	r2 : XREGS PORT MAP(clk=>clk, wren=>'0', rst=>'0', rs1=>instrucao(19 downto 15), rs2=>instrucao(24 downto 20), rd=>instrucao(11 downto 7), data=>saida_mem, ro1=>saidapc, ro2=>dado2);
-	r3 : mux2x1 PORT MAP(a=>dado2,b=>imediato,e=>'0',ro=>rs2OUimm);
-	r4 : ULA_RV PORT MAP(opcode=>ADD_OP, A=>dado1, B=>rs2OUimm, Z=>saida_ULA, zero=>zero);
-	r5 : memDados PORT MAP(address=>saida_ULA(7 downto 0), data=>dado2, wren=>memWrite, q=>saida_mem);
+    --r1 : memIns PORT MAP(address=>pcentrada(7 downto 0),clock=>clk,data=>X"00000000",wren=>'0',q=>instrucao);
+	--r2 : XREGS PORT MAP(clk=>clk, wren=>'0', rst=>'0', rs1=>instrucao(19 downto 15), rs2=>instrucao(24 downto 20), rd=>instrucao(11 downto 7), data=>saida_mem, ro1=>saidapc, ro2=>dado2);
+	--r3 : mux2x1 PORT MAP(a=>dado2,b=>imediato,e=>'0',ro=>rs2OUimm);
+	--r4 : ULA_RV PORT MAP(opcode=>ADD_OP, A=>dado1, B=>rs2OUimm, Z=>saida_ULA, zero=>zero);
+	--r5 : memDados PORT MAP(address=>saida_ULA(7 downto 0), data=>dado2, wren=>memWrite, q=>saida_mem);
 	--r6 : mux2x1 PORT MAP(a=>saida_ULA,b=>saida_mem,e=>'0',ro=>saidapc);
+	igh: 	PC PORT MAP (d => PCfinal, clr => '0', clk => clk, q => pcIN);
+	i3:	adder32 PORT MAP (a => pcIN, b => X"00000001", ro=>PCmais4);
+	i2:	memIns PORT MAP (address => pcIN(7 downto 0), clock => clk, data => X"0000FFFF", wren => '0', q => instrucao);
+	i7:   control PORT MAP (a => instrucao(31 downto 25), branch => branch, memRead => memRead, memToReg => memToReg, ALUOp => ALUOp, memWrite => memWrite, ALUSrc => ALUSrc, regWrite => regWrite);
+	i4:	genImm32 PORT MAP (instr => instrucao, imm32 => imediato);
+	i5:	adder32 PORT MAP (a => PCmais4, b => imediato, ro => endJump);
+	i6:	mux2x1 PORT MAP (a => PCmais4, b => endJump, e => branch, ro => PCend);
+	process (clk)
+	BEGIN
+	if rising_edge(clk) then
+		PCfinal <= PCend;
+		saidaimediato <= imediato;
+		saidapc <= PCfinal;
+		saidainstrucao <= instrucao;
+		pcmemIns <= pcIN;
+		saidaALUOp <= ALUOp;
+		saidaALUSrc <= ALUSrc;
+		saidabranch <= branch;
+		saidamemRead <= memRead;
+		saidamemToReg <= memToReg;
+		saidamemWrite <= memWrite;
+		saidaregWrite <= regWrite;
+		saidazero <= zero;
+	end if;
+	END PROCESS; 
 	
 end behavioral;
 
