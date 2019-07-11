@@ -29,16 +29,6 @@ begin
 			ALUSrc 	<= '1'; --ok
 			regWrite	<= '1'; --ok
 		
-		--auipc
-		elsif	a = "0110111" then
-			branch 	<= '0'; --corrigir
-			memRead  <= '0'; --corrigir
-			memToReg	<= '0'; --corrigir
-			ALUOp		<= "00"; --corrigir
-			memWrite	<= '0'; --ok
-			ALUSrc 	<= '1'; --ok
-			regWrite	<= '1'; --ok
-		
 		-- jal	
 		elsif a = "1101111" then 
 			branch 	<= '1'; --ok
@@ -47,7 +37,7 @@ begin
 			ALUOp		<= "00"; --corrigir
 			memWrite	<= '0'; --ok
 			ALUSrc 	<= '0'; --corrigir
-			regWrite	<= '0'; --corrigir
+			regWrite	<= '1'; --corrigir
 		
 		-- jalr
 		elsif a = "1100111" then
@@ -69,7 +59,7 @@ begin
 			ALUSrc 	<= '0';
 			regWrite	<= '0';
 		
-		-- lw
+		-- lw ok
 		elsif a = "0000011" then
 			branch 	<= '0';
 			memRead  <= '1';
@@ -79,17 +69,17 @@ begin
 			ALUSrc 	<= '1';
 			regWrite	<= '1';
 		
-		-- sw
+		-- sw 
 		elsif a = "0100011" then
 			branch 	<= '0';
 			memRead  <= '0';
 			memToReg	<= '0'; --dont care
 			ALUOp		<= "00";
-			memWrite	<= '0';
+			memWrite	<= '1';
 			ALUSrc 	<= '1';
-			regWrite	<= '1';
+			regWrite	<= '0';
 		
-		-- I 
+		-- I ok
 		elsif a = "0010011" then
 			branch 	<= '0';
 			memRead  <= '0';
@@ -99,7 +89,7 @@ begin
 			ALUSrc 	<= '1';
 			regWrite	<= '1';
 		
-		-- R
+		-- R ok
 		elsif a = "0110011" then
 			branch 	<= '0';
 			memRead 	<= '0';
