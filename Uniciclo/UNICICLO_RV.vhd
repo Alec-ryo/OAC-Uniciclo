@@ -131,12 +131,13 @@ begin
 	igh: 	PC PORT MAP (d => PCfinal, clr => '0', clk => clk, q => pcIN);
 	i3:	adder32 PORT MAP (a => pcIN, b => X"00000001", ro=>PCmais4);
 	i2:	memIns PORT MAP (address => pcIN(7 downto 0), clock => clk, data => X"0000FFFF", wren => '0', q => instrucao);
-	i7:   control PORT MAP (a => instrucao(31 downto 25), branch => branch, memRead => memRead, memToReg => memToReg, ALUOp => ALUOp, memWrite => memWrite, ALUSrc => ALUSrc, regWrite => regWrite);
+	i7:   control PORT MAP (a => instrucao(6 downto 0), branch => branch, memRead => memRead, memToReg => memToReg, ALUOp => ALUOp, memWrite => memWrite, ALUSrc => ALUSrc, regWrite => regWrite);
 	i4:	genImm32 PORT MAP (instr => instrucao, imm32 => imediato);
 	i5:	adder32 PORT MAP (a => PCmais4, b => imediato, ro => endJump);
 	i6:	mux2x1 PORT MAP (a => PCmais4, b => endJump, e => branch, ro => PCend);
 	process (clk)
 	BEGIN
+	
 	if rising_edge(clk) then
 		PCfinal <= PCend;
 		saidaimediato <= imediato;
