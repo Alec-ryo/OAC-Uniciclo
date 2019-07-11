@@ -3,28 +3,24 @@ USE ieee.std_logic_1164.all;
 use ieee.numeric_std.all; 
 use work.rv_pkg.all;          
  
-ENTITY pcMais4_tb IS 
-END pcMais4_tb; 
+ENTITY imm_tb IS 
+END imm_tb; 
  
-ARCHITECTURE tb_arch OF pcMais4_tb IS 
+ARCHITECTURE tb_arch OF imm_tb IS 
 --signals
 	signal clk	: std_logic;
-	signal saidapc   : STD_LOGIC_VECTOR(31 DOWNTO 0);
-	signal saidainstrucao   : STD_LOGIC_VECTOR(31 DOWNTO 0);
-	signal saidaimediato   : STD_LOGIC_VECTOR(31 DOWNTO 0);
+	signal saidapc   : signed(31 DOWNTO 0);
 	signal pcentrada   : STD_LOGIC_VECTOR(31 DOWNTO 0);
 	
 	component UNICICLO_RV 
 		port (
 				clk:			in std_logic;
-				saidapc: 		OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
-				saidainstrucao   : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
-				saidaimediato   : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
+				saidapc: 		OUT signed(31 DOWNTO 0);
 				pcentrada:	in STD_LOGIC_VECTOR(31 DOWNTO 0)
 				);
 	end component;
 	
-	begin i1 : UNICICLO_RV PORT MAP (clk => clk, saidapc => saidapc, saidainstrucao => saidainstrucao, saidaimediato => saidaimediato, pcentrada => pcentrada);
+	begin i1 : UNICICLO_RV PORT MAP (clk => clk, saidapc => saidapc, pcentrada => pcentrada);
 	
 	init : process
 	BEGIN
