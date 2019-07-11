@@ -20,6 +20,7 @@ architecture behavioral of UNICICLO_RV is
 	
 	--declaracao de sinais
 	signal PCmais4 : std_logic_vector(31 downto 0);
+	signal PCfinal : std_logic_vector(31 downto 0) := X"00000000";
 	signal pcIN : std_logic_vector(31 downto 0);
 	signal instrucao : std_logic_vector(31 downto 0);
 	signal dado1 : std_logic_vector(31 downto 0);
@@ -118,14 +119,20 @@ architecture behavioral of UNICICLO_RV is
 
 begin
 	igh: 	PC PORT MAP (d => pcentrada, clr => '0', clk => clk, q => pcIN);
-	i3:	adder32 PORT MAP (a => pcIN, b => X"00000004", ro=>PCmais4);
-	i2:	memIns PORT MAP (address => pcIN(9 downto 2), clock => clk, data => X"00000005", wren => '0', q => instrucao);
-	i7: control PORT MAP (a => instrucao(31 downto 25), branch => branch, memRead => memRead, memToReg => memToReg, ALUOp => ALUOp, memWrite => memWrite, ALUSrc => ALUSrc, regWrite => regWrite);
+	i3:	adder32 PORT MAP (a => pcIN, b => X"00000001", ro=>PCmais4);
+	i2:	memIns PORT MAP (address => pcIN(7 downto 0), clock => clk, data => X"0000FFFF", wren => '0', q => instrucao);
+	i7:   control PORT MAP (a => instrucao(31 downto 25), branch => branch, memRead => memRead, memToReg => memToReg, ALUOp => ALUOp, memWrite => memWrite, ALUSrc => ALUSrc, regWrite => regWrite);
 	i4:	genImm32 PORT MAP (instr => instrucao, imm32 => imediato);
 	i5:	adder32 PORT MAP (a => PCmais4, b => imediato, ro => endJump);
-	i6:	mux2x1 PORT MAP (a => PCmais4, b => endJump, e => '1', ro => saidapc);
-	--i3 : adder32 PORT MAP (a => pcIN, b => X"00000004", ro=>saidapc);
-	
+	i6:	mux2x1 PORT MAP (a => PCmais4, b => endJump, e => branch, ro => PCfinal);
+	process (clk)
+	BEGIN
+	if rising_edge(clk) then
+		saidaimediato <= imediato;
+		saidapc <= PCfinal;
+		saidainstrucao <= instrucao;
+	end if;
+	END PROCESS; 
 	
 end behavioral;
 

@@ -28,13 +28,50 @@ ARCHITECTURE tb_arch OF pcMais4_tb IS
 	
 	init : process
 	BEGIN
-		clk <= '0'; pcentrada <= X"00000001";
+		clk <= '0'; 
+		pcentrada <= X"00000001";
 		wait for 4 ps;
-		clk <= '1'; pcentrada <= X"00000002";
+		clk <= '1';
 		wait for 4 ps;
-		clk <= '0'; pcentrada <= X"00000003";
+		clk <= '0'; 
+		pcentrada <= X"00000002";
 		wait for 4 ps;
-		clk <= '1'; pcentrada <= X"00000004";
+		clk <= '1';
+		wait for 4 ps;
+		clk <= '0'; 
+		pcentrada <= X"00000003";
+		wait for 4 ps;
+		clk <= '1';
+		wait for 4 ps;
+		clk <= '0'; 
+		pcentrada <= X"00000001";
+		wait for 4 ps;
+		clk <= '1';
+		wait for 4 ps;
+		clk <= '0'; 
+		pcentrada <= X"00000004";
+		wait for 4 ps;
+		clk <= '1';
+		wait for 4 ps;
+		clk <= '0'; 
+		pcentrada <= X"00000005";
+		wait for 4 ps;
+		clk <= '1';
+		wait for 4 ps;
+		clk <= '0'; 
+		pcentrada <= X"00000006";
+		wait for 4 ps;
+		clk <= '1';
+		wait for 4 ps;
+		clk <= '0'; 
+		pcentrada <= X"00000007";
+		wait for 4 ps;
+		clk <= '1';
+		wait for 4 ps;
+		clk <= '0'; 
+		pcentrada <= X"00000008";
+		wait for 4 ps;
+		clk <= '1';
 		wait for 4 ps;
 
 	END PROCESS init; 
