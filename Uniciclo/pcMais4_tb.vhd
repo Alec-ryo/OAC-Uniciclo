@@ -9,7 +9,7 @@ END pcMais4_tb;
 ARCHITECTURE tb_arch OF pcMais4_tb IS 
 --signals
 	signal clk	: std_logic;
-	signal saida   : STD_LOGIC_VECTOR(31 DOWNTO 0);
+	signal saidapc   : STD_LOGIC_VECTOR(31 DOWNTO 0);
 	signal pcentrada   : STD_LOGIC_VECTOR(31 DOWNTO 0);
 	
 	component UNICICLO_RV 
