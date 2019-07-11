@@ -9,7 +9,7 @@ use work.xregs_pkg.all;
 entity UNICICLO_RV is
 	port (
 		clk	: in std_logic;
-		saida   : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
+		saidapc   : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
 		pcentrada   : in STD_LOGIC_VECTOR(31 DOWNTO 0)
 		);
 end UNICICLO_RV; 
@@ -65,6 +65,7 @@ architecture behavioral of UNICICLO_RV is
 begin
 	igh : PC PORT MAP (d => pcentrada, clr => '0', clk => clk, q => PCin);
 	i2  : memIns PORT MAP (address => pcIN(9 downto 2), clock => clk, data => X"00000000", wren => '0', q => saida);
+	i3 : adder32 PORT MAP (a => pcIN, b => X"00000004", ro=>saidapc);
 	
 end behavioral;
 
