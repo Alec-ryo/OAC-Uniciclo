@@ -50,10 +50,6 @@ set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_RO
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
 set_global_assignment -name EDA_TEST_BENCH_ENABLE_STATUS TEST_BENCH_MODE -section_id eda_simulation
 set_global_assignment -name EDA_NATIVELINK_SIMULATION_TEST_BENCH pc_tb -section_id eda_simulation
-set_global_assignment -name EDA_TEST_BENCH_NAME tb -section_id eda_simulation
-set_global_assignment -name EDA_DESIGN_INSTANCE_NAME i2 -section_id tb
-set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "10 s" -section_id tb
-set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME memIns_tb -section_id tb
 set_global_assignment -name VHDL_FILE cntrULA.vhd
 set_global_assignment -name VHDL_FILE PC.vhd
 set_global_assignment -name VHDL_FILE mux2x1.vhd
@@ -72,9 +68,9 @@ set_global_assignment -name VHDL_FILE cntrlULA_tb.vhd
 set_global_assignment -name VHDL_FILE pcMais4_tb.vhd
 set_global_assignment -name VHDL_FILE memIns_tb.vhd
 set_global_assignment -name VHDL_FILE imm_tb.vhd
-set_global_assignment -name EDA_TEST_BENCH_FILE memIns_tb.vhd -section_id tb
 set_global_assignment -name EDA_TEST_BENCH_NAME pc_tb -section_id eda_simulation
 set_global_assignment -name EDA_DESIGN_INSTANCE_NAME i1 -section_id pc_tb
 set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME pcMais4_tb -section_id pc_tb
+set_global_assignment -name EDA_TEST_BENCH_RUN_SIM_FOR "1 ns" -section_id pc_tb
 set_global_assignment -name EDA_TEST_BENCH_FILE pcMais4_tb.vhd -section_id pc_tb
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
