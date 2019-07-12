@@ -49,6 +49,7 @@ architecture behavioral of UNICICLO_RV is
 	signal blt: std_logic;
 	signal bgt: std_logic; 
 	signal zero_and_branch: std_logic;
+	signal faz_jump: std_logic;
 	
 	component PC 
 		port (
@@ -152,16 +153,26 @@ begin
 	pcpath5 : genImm32 PORT MAP (instr => instrucao, imm32 => imediato);
 	pcpath6 : adder32 PORT MAP (a => pcout, b => imediato, ro => endJump);
 	zero_and_branch <= zero and branch;
-	pcpath7 : mux2x1 PORT MAP (a => PCmais4, b => endJump, e => zero_and_branch, ro => PCend);
+	--O mux a seguir ainda faz or com jal, por isso: muxjalPC <= zero_and_branch or jal
+	pcpath7 : mux2x1 PORT MAP (a => PCmais4, b => endJump, e => faz_jump, ro => PCend);
 --========================================================--
 
 --==================Caminho de instrucoes=================--
 	r1 : cntrULA PORT MAP(funct7=>instrucao(6 downto 0) ,funct3=>instrucao(14 downto 12), aluop=>ALUOp, aluctr=>cntrULA_ULA);
-	r2 : XREGS PORT MAP(clk=>clk_mem, wren=>regWrite, rst=>clr, rs1=>instrucao(19 downto 15), rs2=>instrucao(24 downto 20), rd=>instrucao(11 downto 7), data=>memOUula, ro1=>dado1, ro2=>dado2);
+	r2 : XREGS PORT MAP(clk=>clk, wren=>regWrite, rst=>clr, rs1=>instrucao(19 downto 15), rs2=>instrucao(24 downto 20), rd=>instrucao(11 downto 7), data=>memOUula, ro1=>dado1, ro2=>dado2);
 	r3 : mux2x1 PORT MAP(a=>dado2,b=>imediato,e=>ALUSrc,ro=>rd2OUimm);
 	r4 : ULA_RV PORT MAP(opcode=>cntrULA_ULA, A=>dado1, B=>rd2OUimm, Z=>saida_ULA, zero=>zero);
 	r5 : memDados PORT MAP(address=>saida_ULA(9 downto 2), clock=>clk_mem, data=>dado2, wren=>memToReg, q=>saida_mem);
-	r6 : mux2x1 PORT MAP(a=>saida_ULA,b=>saida_mem,e=>'0',ro=>memOUula);
+	r6 : mux2x1 PORT MAP(a=>saida_ULA,b=>saida_mem,e=>memToReg,ro=>muxULAmem_OU_PCmais4);
+--========================================================--
+
+--=======================JAL, JALR========================--
+	faz_jump <= zero_and_branch or jal or jalr;
+	j1  : mux2x1 PORT MAP(a=>memToReg,b=>PCmais4,e=>jal,ro=>muxULAmem_OU_PCmais4);
+--========================================================--
+	
+--==========================LUI==========================--
+
 --========================================================--
 
 	--branch <= '0';
