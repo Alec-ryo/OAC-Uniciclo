@@ -8,21 +8,9 @@ use work.xregs_pkg.all;
 
 entity UNICICLO_RV is
 	port (
-		clk	: in std_logic;
-		clr   : in std_logic
---		saidapc   : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
---		saidainstrucao   : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
---		saidaimediato   : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
---		pcentrada   : in STD_LOGIC_VECTOR(31 DOWNTO 0);
---		pcmemIns : OUT std_logic_vector(31 downto 0);
---		saidabranch: OUT std_logic;
---		saidazero: OUT std_logic;
---		saidamemRead: OUT std_logic;
---		saidamemToReg: OUT std_logic;
---		saidaALUOp: OUT std_logic_vector(1 downto 0);
---		saidamemWrite: OUT std_logic;
---		saidaALUSrc: OUT std_logic;
---		saidaregWrite: OUT std_logic
+		clk		: in std_logic;
+		clk_mem	: in std_logic;
+		clr   	: in std_logic
 		);
 end UNICICLO_RV; 
 
@@ -47,12 +35,20 @@ architecture behavioral of UNICICLO_RV is
 	signal memRead: std_logic;
 	signal memToReg: std_logic;
 	signal ALUOp: std_logic_vector(1 downto 0);
-	signal ALUOp_MD: ULA_OP;
+	signal cntrULA_ULA: ULA_OP;
 	signal memWrite: std_logic;
 	signal ALUSrc: std_logic;
 	signal regWrite: std_logic;
 	signal soma4: std_logic_vector(31 downto 0);
-	signal rs2OUimm: std_logic_vector(31 downto 0);
+	signal rd2OUimm: std_logic_vector(31 downto 0);
+	signal memOUula: std_logic_vector(31 downto 0);
+	signal jal: std_logic;
+	signal jalr: std_logic;
+	signal lui: std_logic;
+	signal bne: std_logic;
+	signal blt: std_logic;
+	signal bgt: std_logic; 
+	signal zero_and_branch: std_logic;
 	
 	component PC 
 		port (
@@ -120,66 +116,59 @@ architecture behavioral of UNICICLO_RV is
 	component control is
 		port (
 				a 				: in  std_logic_vector(6 downto 0);
+				funct3		: in  std_logic_vector(2 downto 0);
 				branch   	: out std_logic;
 				memRead		: out std_logic;
 				memToReg		: out std_logic;
 				ALUOp			: out std_logic_vector(1 downto 0);
 				memWrite		: out std_logic;
 				ALUSrc		: out std_logic;
-				regWrite		: out std_logic
+				regWrite		: out std_logic;
+				jal			: out std_logic;
+				jalr			: out std_logic;
+				lui			: out std_logic;
+				bne			: out std_logic;
+				blt			: out std_logic;
+				bgt			: out std_logic
+		);
+	end component;
+	
+	component cntrULA is
+		port (
+			funct7 : in std_logic_vector(6 downto 0);
+			funct3 : in std_logic_vector(2 downto 0);
+			aluop  : in std_logic_vector(1 downto 0);
+			aluctr : out ULA_OP
 		);
 	end component;
 		
 begin
-
-	--igh: 	PC PORT MAP (d => pcentrada, clr => '0', clk => clk, q => pcIN);	
-	--i3:	adder32 PORT MAP (a => pcIN, b => X"00000004", ro=>PCmais4);
-	--i2:	memIns PORT MAP (address => pcIN(9 downto 2), clock => clk, data => X"00000000", wren => '0', q => saidapc);
-	--i7:	control PORT MAP (a => instrucao(31 downto 25), branch => branch, memRead => memRead, memToReg => memToReg, ALUOp => ALUOp, memWrite => memWrite, ALUSrc => ALUSrc, regWrite => regWrite);
-	--i4:	genImm32 PORT MAP (instr => instrucao, imm32 => imediato);
-	--i5:	adder32 PORT MAP (a => PCmais4, b => imediato, ro => endJump);
-	--i6:	mux2x1 PORT MAP (a => PCmais4, b => endJump, e => '1', ro => saidapc);
-	--i3 : adder32 PORT MAP (a => pcIN, b => X"00000004", ro=>saidapc);
 	
 --======================PC+4/BRANCH=======================--
-	igh :	PC PORT MAP (d => PCend, clr => clr, clk => clk, q => pcout);
-	i3  : adder32 PORT MAP (a => pcout, b => X"00000004", ro=>PCmais4);
-	i2  :	memIns PORT MAP (address => pcout(9 downto 2), clock => clk, data => X"0000FFFF", wren => '0', q => instrucao);
-	--i7  : control PORT MAP (a => instrucao(6 downto 0), branch => branch, memRead => memRead, memToReg => memToReg, ALUOp => ALUOp, memWrite => memWrite, ALUSrc => ALUSrc, regWrite => regWrite);
-	i4  :	genImm32 PORT MAP (instr => instrucao, imm32 => imediato);
-	i5  :	adder32 PORT MAP (a => pcout, b => imediato, ro => endJump);
-	i6  :	mux2x1 PORT MAP (a => PCmais4, b => endJump, e => branch, ro => PCend);
+	pcpath1 : PC PORT MAP (d => PCend, clr => clr, clk => clk, q => pcout);
+	pcpath2 : adder32 PORT MAP (a => pcout, b => X"00000004", ro=>PCmais4);
+	pcpath3 : memIns PORT MAP (address => pcout(9 downto 2), clock => clk_mem, data => X"00000000", wren => '0', q => instrucao);
+	pcpath4 : control PORT MAP (a => instrucao(6 downto 0), funct3=>instrucao(14 downto 12), branch => branch, memRead => memRead, memToReg => memToReg, ALUOp => ALUOp, memWrite => memWrite, ALUSrc => ALUSrc, regWrite => regWrite, jal => jal, jalr => jalr, lui => lui, bne => bne, blt => blt, bgt => bgt);
+	pcpath5 : genImm32 PORT MAP (instr => instrucao, imm32 => imediato);
+	pcpath6 : adder32 PORT MAP (a => pcout, b => imediato, ro => endJump);
+	zero_and_branch <= zero and branch;
+	pcpath7 : mux2x1 PORT MAP (a => PCmais4, b => endJump, e => zero_and_branch, ro => PCend);
 --========================================================--
 
 --==================Caminho de instrucoes=================--
---	r1 : memIns PORT MAP(address=>pcentrada(7 downto 0),clock=>clk,data=>X"00000000",wren=>'0',q=>instrucao);
---	r2 : XREGS PORT MAP(clk=>clk, wren=>'0', rst=>'0', rs1=>instrucao(19 downto 15), rs2=>instrucao(24 downto 20), rd=>instrucao(11 downto 7), data=>saida_mem, ro1=>saidapc, ro2=>dado2);
---	r3 : mux2x1 PORT MAP(a=>dado2,b=>imediato,e=>'0',ro=>rs2OUimm);
---	r4 : ULA_RV PORT MAP(opcode=>ADD_OP, A=>dado1, B=>rs2OUimm, Z=>saida_ULA, zero=>zero);
---	r5 : memDados PORT MAP(address=>saida_ULA(7 downto 0), data=>dado2, wren=>memWrite, q=>saida_mem);
---	r6 : mux2x1 PORT MAP(a=>saida_ULA,b=>saida_mem,e=>'0',ro=>saidapc);
+	r1 : cntrULA PORT MAP(funct7=>instrucao(6 downto 0) ,funct3=>instrucao(14 downto 12), aluop=>ALUOp, aluctr=>cntrULA_ULA);
+	r2 : XREGS PORT MAP(clk=>clk_mem, wren=>regWrite, rst=>clr, rs1=>instrucao(19 downto 15), rs2=>instrucao(24 downto 20), rd=>instrucao(11 downto 7), data=>memOUula, ro1=>dado1, ro2=>dado2);
+	r3 : mux2x1 PORT MAP(a=>dado2,b=>imediato,e=>ALUSrc,ro=>rd2OUimm);
+	r4 : ULA_RV PORT MAP(opcode=>cntrULA_ULA, A=>dado1, B=>rd2OUimm, Z=>saida_ULA, zero=>zero);
+	r5 : memDados PORT MAP(address=>saida_ULA(9 downto 2), clock=>clk_mem, data=>dado2, wren=>memToReg, q=>saida_mem);
+	r6 : mux2x1 PORT MAP(a=>saida_ULA,b=>saida_mem,e=>'0',ro=>memOUula);
 --========================================================--
 
-	branch <= '0';
+	--branch <= '0';
 
 	process (clk)
 	BEGIN
 	
---	if rising_edge(clk) then
---		PCfinal <= PCend;
---		saidaimediato <= imediato;
---		saidapc <= PCfinal;
---		saidainstrucao <= instrucao;
---		pcmemIns <= pcIN;
---		saidaALUOp <= ALUOp;
---		saidaALUSrc <= ALUSrc;
---		saidabranch <= branch;
---		saidamemRead <= memRead;
---		saidamemToReg <= memToReg;
---		saidamemWrite <= memWrite;
---		saidaregWrite <= regWrite;
---		saidazero <= zero;
---	end if;
 	END PROCESS; 
 	
 end behavioral;
