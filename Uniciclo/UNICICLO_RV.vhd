@@ -17,7 +17,7 @@ end UNICICLO_RV;
 architecture behavioral of UNICICLO_RV is
 	
 	--declaracao de sinais
-	signal PCmais4 : std_logic_vector(31 downto 0);
+	signal PCmais4 : std_logic_vector(31 downto 0) := X"00000000";
 	signal PCfinal : std_logic_vector(31 downto 0) := X"00000000";
 	signal PCend : std_logic_vector(31 downto 0) := X"00000000";
 	signal pcout : std_logic_vector(31 downto 0);
