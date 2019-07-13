@@ -176,7 +176,7 @@ begin
 	i_MuxDataJal : mux2x1 PORT MAP(a=>vai_MuxDataJal,b=>PCmais4,e=>jal,ro=>vai_reg);
 --========================================================--
 
-	process (jal, jalr, branch, zero, bne)
+	process (jal, jalr, zero, branch, bne)
 	BEGIN
 		faz_jump <= jal or (branch and zero) or jalr or (not(zero) and bne);
 	END PROCESS; 

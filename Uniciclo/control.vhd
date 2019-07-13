@@ -44,7 +44,7 @@ begin
 		
 		-- jal	
 		elsif a = "1101111" then 
-			branch 	<= '1'; --ok
+			branch 	<= '0'; --ok
 			memRead  <= '0'; --ok
 			memToReg	<= '0'; --ok
 			ALUOp		<= "00"; --corrigir
@@ -60,7 +60,7 @@ begin
 			
 		-- jalr
 		elsif a = "1100111" then
-			branch 	<= '1'; --ok
+			branch 	<= '0'; --ok
 			memRead  <= '0'; --ok
 			memToReg	<= '0'; --ok
 			ALUOp		<= "00"; --corrigir
@@ -76,7 +76,6 @@ begin
 			
 		-- BType
 		elsif a = "1100011" then
-			branch 	<= '1';
 			memRead  <= '0';
 			memToReg	<= 'X'; --dont care
 			ALUOp		<= "01";
@@ -87,13 +86,13 @@ begin
 			jalr		<= '0';
 			lui		<= '0';
 			if funct3 = "000" then
-				bne<='0'; blt<='0'; bgt<='0';
+				branch<='1';bne<='0'; blt<='0'; bgt<='0';
 			elsif funct3 = "001" then
-				bne<='1'; blt<='0'; bgt<='0';
+				branch<='0';bne<='1'; blt<='0'; bgt<='0';
 			elsif funct3 = "100" then
-				bne<='0'; blt<='1'; bgt<='0';
+				branch<='0';bne<='0'; blt<='1'; bgt<='0';
 			else --bgt
-				bne<='0'; blt<='0'; bgt<='1';
+				branch<='0';bne<='0'; blt<='0'; bgt<='1';
 			end if;
 			
 		-- lw ok
