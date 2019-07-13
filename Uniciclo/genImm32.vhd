@@ -19,7 +19,11 @@ begin
 		--R_type
 		when "0110011"  => imm32 <= X"00000000";
 		--I_type
-		when "0000011" | "0010011" | "1100111"  => imm32 <= std_logic_vector(resize(signed(instr(31 downto 20)), 32));
+		when "0000011" | "1100111"  => imm32 <= std_logic_vector(resize(signed(instr(31 downto 20)), 32));
+		when "0010011" => if (instr(14 downto 12) = "001" or instr(14 downto 12) = "101") --se for instrucao com shamt
+								then imm32 <= std_logic_vector(resize(signed(instr(24 downto 20)), 32));
+								else imm32 <= std_logic_vector(resize(signed(instr(31 downto 20)), 32));
+								end if;
 		--S_type
 		when "0100011"  => imm32 <= std_logic_vector(resize(signed(instr(31 downto 25) & instr(11 downto 7)), 32));
 		--SB_type
