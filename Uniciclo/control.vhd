@@ -133,7 +133,7 @@ begin
 			branch 	<= '0';
 			memRead  <= '0';
 			memToReg	<= '0';
-			ALUOp		<= "10";
+			ALUOp		<= "11";
 			memWrite	<= '0';
 			ALUSrc 	<= '1';
 			regWrite	<= '1';

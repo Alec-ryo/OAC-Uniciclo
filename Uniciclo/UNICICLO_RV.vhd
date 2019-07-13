@@ -57,6 +57,8 @@ architecture behavioral of UNICICLO_RV is
 	signal jal_or_jalr: std_logic;
 	signal resultado_zero: std_logic;
 	signal vai_MuxDataJal: std_logic_vector(31 downto 0);
+	signal endJalr: std_logic_vector(31 downto 0);
+	signal PCjalr: std_logic_vector(31 downto 0);
 	
 	component PC 
 		port (
@@ -159,7 +161,8 @@ begin
 	pcpath4 : control PORT MAP (a => instrucao(6 downto 0), funct3=>instrucao(14 downto 12), branch => branch, memRead => memRead, memToReg => memToReg, ALUOp => ALUOp, memWrite => memWrite, ALUSrc => ALUSrc, regWrite => regWrite, jal => jal, jalr => jalr, lui => lui, bne => bne, blt => blt, bgt => bgt);
 	pcpath5 : genImm32 PORT MAP (instr => instrucao, imm32 => imediato);
 	pcpath6 : adder32 PORT MAP (a => pcout, b => imediato, ro => endJump);
-	pcpath7 : mux2x1 PORT MAP (a => PCmais4, b => endJump, e => faz_jump, ro => PCend);
+	pcpath7 : mux2x1 PORT MAP (a => PCmais4, b => endJump, e => faz_jump, ro => PCjalr);
+	pcpath8 : mux2x1 PORT MAP (a => PCjalr, b => endJalr, e => jalr, ro => PCend);
 --========================================================--
 
 --==================Caminho de instrucoes=================--
@@ -172,10 +175,15 @@ begin
 	i_MuxDataJal : mux2x1 PORT MAP(a=>vai_MuxDataJal,b=>PCmais4,e=>jal,ro=>vai_reg);
 --========================================================--
 
-	process (jal, branch, zero)
+	process (jal, jalr, branch, zero)
 	BEGIN
-		faz_jump <= jal or (branch and zero);
+		faz_jump <= jal or (branch and zero) or jalr;
 	END PROCESS; 
+	
+	process (jalr)
+	BEGIN
+		endJalr <= std_logic_vector(signed(imediato) + signed(dado1));
+	END PROCESS;
 	
 end behavioral;
 

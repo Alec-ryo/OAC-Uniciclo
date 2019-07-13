@@ -40,7 +40,30 @@ process(funct7, funct3, aluop) begin
 					else 
 						aluctr <= AND_OP;
 					end if;
-	when others => aluctr <= ADD_OP;
+	--aluop = '11'
+	when others =>if funct3 = "000" then 
+						aluctr <= ADD_OP;
+					elsif funct3 = "010" then
+						aluctr <= SLT_OP;
+					elsif funct3 = "011" then 
+						aluctr <= SLTU_OP;
+					elsif funct3 = "100" then 
+						aluctr <= XOR_OP;
+					elsif funct3 = "110" then
+						aluctr <= OR_OP;
+					elsif funct3 = "111" then
+						aluctr <= AND_OP;
+					--shamt
+					elsif funct3 = "001" then
+						aluctr <= SLL_OP;
+					elsif funct3 = "101" then
+						if funct7(5) = '1' 
+						then aluctr <= SRA_OP;
+						else aluctr <= SRL_OP;
+						end if;
+					else 
+						aluctr <= AND_OP;
+					end if;
 	end case;
 end process;
 end architecture;
