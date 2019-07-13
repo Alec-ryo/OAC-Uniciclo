@@ -56,6 +56,7 @@ architecture behavioral of UNICICLO_RV is
 	signal vai_reg: std_logic_vector(31 downto 0);
 	signal jal_or_jalr: std_logic;
 	signal resultado_zero: std_logic;
+	signal vai_MuxDataJal: std_logic_vector(31 downto 0);
 	
 	component PC 
 		port (
@@ -158,32 +159,22 @@ begin
 	pcpath4 : control PORT MAP (a => instrucao(6 downto 0), funct3=>instrucao(14 downto 12), branch => branch, memRead => memRead, memToReg => memToReg, ALUOp => ALUOp, memWrite => memWrite, ALUSrc => ALUSrc, regWrite => regWrite, jal => jal, jalr => jalr, lui => lui, bne => bne, blt => blt, bgt => bgt);
 	pcpath5 : genImm32 PORT MAP (instr => instrucao, imm32 => imediato);
 	pcpath6 : adder32 PORT MAP (a => pcout, b => imediato, ro => endJump);
-	
-	--jal, jalr, beq, bne, blt, bgt
-	--faz_jump <= (zero and branch) or jal or jalr or (bne and not zero) or (not(resultado_zero) and ((saida_ULA(31) and blt) ));--or (not saida_ULA(31) and bgt)));
-	--O mux a seguir ainda faz or com jal, por isso: muxjalPC <= zero_and_branch or jal
-	pcpath7 : mux2x1 PORT MAP (a => PCmais4, b => endJump, e => '0', ro => PCend);
-	--pcpath7 : mux2x1 PORT MAP (a => PCmais4, b => endJump, e => faz_jump, ro => PCend);
-	--jalr1 : mux2x1 PORT MAP(a=>saida_branchOUPCmais4,b=>saida_ULA,e=>jalr,ro=>PCend);
+	pcpath7 : mux2x1 PORT MAP (a => PCmais4, b => endJump, e => faz_jump, ro => PCend);
 --========================================================--
 
 --==================Caminho de instrucoes=================--
-	i_cntrULA : cntrULA PORT MAP(funct7=>instrucao(6 downto 0) ,funct3=>instrucao(14 downto 12), aluop=>ALUOp, aluctr=>cntrULA_ULA);
+	i_cntrULA : cntrULA PORT MAP(funct7=>instrucao(31 downto 25) ,funct3=>instrucao(14 downto 12), aluop=>ALUOp, aluctr=>cntrULA_ULA);
 	i_XREGS : XREGS PORT MAP(clk=>clk, wren=>regWrite, rst=>clr, rs1=>instrucao(19 downto 15), rs2=>instrucao(24 downto 20), rd=>instrucao(11 downto 7), data=>vai_reg, ro1=>dado1, ro2=>dado2);
 	i_MuxULAB : mux2x1 PORT MAP(a=>dado2,b=>imediato,e=>ALUSrc,ro=>rd2OUimm);
 	i_ULA : ULA_RV PORT MAP(opcode=>cntrULA_ULA, A=>dado1, B=>rd2OUimm, Z=>saida_ULA, zero=>zero);
 	i_MD : memDados PORT MAP(address=>saida_ULA(9 downto 2), clock=>clk_mem, data=>dado2, wren=>memWrite, q=>saida_mem);
-	i_MuxDataReg : mux2x1 PORT MAP(a=>saida_ULA,b=>saida_mem,e=>memToReg,ro=>vai_reg);
-	--mux jalr
-	--jal_or_jalr <= jal or jalr;
-	--jal2   : mux2x1 PORT MAP(a=>saida_muxULAmem,b=>PCmais4,e=>jal_or_jalr,ro=>mux_jal_out);
-	--mux lui
-	--lui2	: mux2x1 PORT MAP(a=>mux_jal_out,b=>imediato,e=>lui,ro=>vai_reg);
+	i_MuxDataReg : mux2x1 PORT MAP(a=>saida_ULA,b=>saida_mem,e=>memToReg,ro=>vai_MuxDataJal);
+	i_MuxDataJal : mux2x1 PORT MAP(a=>vai_MuxDataJal,b=>PCmais4,e=>jal,ro=>vai_reg);
 --========================================================--
 
-	process (clk)
+	process (jal, branch, zero)
 	BEGIN
-	
+		faz_jump <= jal or (branch and zero);
 	END PROCESS; 
 	
 end behavioral;
