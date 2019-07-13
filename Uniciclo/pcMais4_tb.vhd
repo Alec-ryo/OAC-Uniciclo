@@ -35,7 +35,7 @@ ARCHITECTURE tb_arch OF pcMais4_tb IS
 		
 		WAIT;
 	END PROCESS init; 
-	
+	clr <= '0';
 	clkgen: process
 	begin
 		clk <= '1';

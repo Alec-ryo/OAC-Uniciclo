@@ -147,11 +147,11 @@ begin
 		-- R ok
 		elsif a = "0110011" then
 			branch 	<= '0';
-			memRead 	<= '0';
-			memToReg	<= '0';
-			ALUOp		<= "10";
-			memWrite	<= '0';
-			ALUSrc 	<= '0';
+			memRead 	<= '0';  --ok
+			memToReg	<= '0';  --ok
+			ALUOp		<= "10"; --ok
+			memWrite	<= '0';  --ok
+			ALUSrc 	<= '0';  --ok
 			regWrite	<= '1';
 			jal		<= '0';
 			jalr		<= '0';
