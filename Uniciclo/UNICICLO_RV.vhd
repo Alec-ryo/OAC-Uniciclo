@@ -163,18 +163,17 @@ begin
 	--faz_jump <= (zero and branch) or jal or jalr or (bne and not zero) or (not(resultado_zero) and ((saida_ULA(31) and blt) ));--or (not saida_ULA(31) and bgt)));
 	--O mux a seguir ainda faz or com jal, por isso: muxjalPC <= zero_and_branch or jal
 	pcpath7 : mux2x1 PORT MAP (a => PCmais4, b => endJump, e => '0', ro => PCend);
-	--faz_jump <= zero and branch;
 	--pcpath7 : mux2x1 PORT MAP (a => PCmais4, b => endJump, e => faz_jump, ro => PCend);
 	--jalr1 : mux2x1 PORT MAP(a=>saida_branchOUPCmais4,b=>saida_ULA,e=>jalr,ro=>PCend);
 --========================================================--
 
 --==================Caminho de instrucoes=================--
-	r1 : cntrULA PORT MAP(funct7=>instrucao(6 downto 0) ,funct3=>instrucao(14 downto 12), aluop=>ALUOp, aluctr=>cntrULA_ULA);
-	r2 : XREGS PORT MAP(clk=>clk, wren=>regWrite, rst=>clr, rs1=>instrucao(19 downto 15), rs2=>instrucao(24 downto 20), rd=>instrucao(11 downto 7), data=>vai_reg, ro1=>dado1, ro2=>dado2);
-	r3 : mux2x1 PORT MAP(a=>dado2,b=>imediato,e=>ALUSrc,ro=>rd2OUimm);
-	r4 : ULA_RV PORT MAP(opcode=>cntrULA_ULA, A=>dado1, B=>rd2OUimm, Z=>saida_ULA, zero=>zero);
-	r5 : memDados PORT MAP(address=>saida_ULA(9 downto 2), clock=>clk_mem, data=>dado2, wren=>memToReg, q=>saida_mem);
-	r6 : mux2x1 PORT MAP(a=>saida_ULA,b=>saida_mem,e=>memToReg,ro=>vai_reg);
+	i_cntrULA : cntrULA PORT MAP(funct7=>instrucao(6 downto 0) ,funct3=>instrucao(14 downto 12), aluop=>ALUOp, aluctr=>cntrULA_ULA);
+	i_XREGS : XREGS PORT MAP(clk=>clk, wren=>regWrite, rst=>clr, rs1=>instrucao(19 downto 15), rs2=>instrucao(24 downto 20), rd=>instrucao(11 downto 7), data=>vai_reg, ro1=>dado1, ro2=>dado2);
+	i_MuxULAB : mux2x1 PORT MAP(a=>dado2,b=>imediato,e=>ALUSrc,ro=>rd2OUimm);
+	i_ULA : ULA_RV PORT MAP(opcode=>cntrULA_ULA, A=>dado1, B=>rd2OUimm, Z=>saida_ULA, zero=>zero);
+	i_MD : memDados PORT MAP(address=>saida_ULA(9 downto 2), clock=>clk_mem, data=>dado2, wren=>memWrite, q=>saida_mem);
+	i_MuxDataReg : mux2x1 PORT MAP(a=>saida_ULA,b=>saida_mem,e=>memToReg,ro=>vai_reg);
 	--mux jalr
 	--jal_or_jalr <= jal or jalr;
 	--jal2   : mux2x1 PORT MAP(a=>saida_muxULAmem,b=>PCmais4,e=>jal_or_jalr,ro=>mux_jal_out);

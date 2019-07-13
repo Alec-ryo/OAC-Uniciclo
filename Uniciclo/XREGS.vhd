@@ -16,21 +16,15 @@ architecture behavioral of XREGS is
 	type registradores is array (31 downto 0) of std_logic_vector(31 downto 0);
 	signal reg : registradores := (others=> (others => '0'));	
 begin		
+
+	ro1 <= X"00000000" when (rs1 = "00000") else reg(to_integer(unsigned(rs1)));
+	ro2 <= X"00000000" when (rs2 = "00000") else reg(to_integer(unsigned(rs2)));
+
 	proc_xregs: process (clk) begin
 		if rising_edge(clk) then
-			reg(0) <= X"00000000";
-			if (rst = '0') then
-				ro1 <= reg(to_integer(unsigned(rs1)));
-				ro2 <= reg(to_integer(unsigned(rs2)));
-			else 
-				ro1 <= X"00000000";
-				ro2 <= X"00000000";
-			end if;
-			
-			if ((wren = '1') and (rd /= X"00000000")) then
+			if (wren = '1') then
 				reg(to_integer(unsigned(rd))) <= data;
 			end if;
-			
 		end if;
 	end process;
 end architecture behavioral; 
