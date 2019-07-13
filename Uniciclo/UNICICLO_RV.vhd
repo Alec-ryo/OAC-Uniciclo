@@ -178,7 +178,7 @@ begin
 
 	process (jal, jalr, branch, zero)
 	BEGIN
-		faz_jump <= jal or (branch and zero) or jalr;
+		faz_jump <= jal or (branch and zero) or jalr or (not(zero) and bne);
 	END PROCESS; 
 	
 end behavioral;
