@@ -28,13 +28,13 @@ begin
 	process (a) begin		  
 		-- lui
 		if a = "0110111" then
-			branch 	<= '0'; --corrigir
-			memRead  <= '0'; --corrigir
-			memToReg	<= '0'; --corrigir
-			ALUOp		<= "00"; --corrigir
-			memWrite	<= '0'; --ok
-			ALUSrc 	<= '1'; --ok
-			regWrite	<= '1'; --ok
+			branch 	<= '0'; 
+			memRead  <= '0'; 
+			memToReg	<= '0'; 
+			ALUOp		<= "00"; 
+			memWrite	<= '0'; 
+			ALUSrc 	<= '1'; 
+			regWrite	<= '1'; 
 			jal		<= '0';
 			jalr		<= '0';
 			lui		<= '1';
@@ -65,7 +65,7 @@ begin
 			memToReg	<= '0'; --ok
 			ALUOp		<= "00"; --corrigir
 			memWrite	<= '0'; --ok
-			ALUSrc 	<= '1'; --ok
+			ALUSrc 	<= '0'; --ok
 			regWrite	<= '1'; --ok
 			jal		<= '0';
 			jalr		<= '1';
@@ -78,7 +78,7 @@ begin
 		elsif a = "1100011" then
 			branch 	<= '1';
 			memRead  <= '0';
-			memToReg	<= '0'; --dont care
+			memToReg	<= 'X'; --dont care
 			ALUOp		<= "01";
 			memWrite	<= '0';
 			ALUSrc 	<= '0';
@@ -116,7 +116,7 @@ begin
 		elsif a = "0100011" then
 			branch 	<= '0';
 			memRead  <= '0';
-			memToReg	<= '0'; --dont care
+			memToReg	<= 'X'; --dont care
 			ALUOp		<= "00";
 			memWrite	<= '1';
 			ALUSrc 	<= '1';
@@ -133,7 +133,7 @@ begin
 			branch 	<= '0';
 			memRead  <= '0';
 			memToReg	<= '0';
-			ALUOp		<= "10";
+			ALUOp		<= "00";
 			memWrite	<= '0';
 			ALUSrc 	<= '1';
 			regWrite	<= '1';
@@ -146,35 +146,29 @@ begin
 		
 		-- R ok
 		elsif a = "0110011" then
-			branch 	<= '0';
-			memRead 	<= '0';
-			memToReg	<= '0';
-			ALUOp		<= "10";
-			memWrite	<= '0';
-			ALUSrc 	<= '0';
-			regWrite	<= '1';
-			jal		<= '0';
-			jalr		<= '0';
-			lui		<= '0';
-			bne		<= '0';
-			blt		<= '0';
-			bgt		<= '0';
+			branch<='0'; 
+			memRead<='0';
+			memToReg<='0';
+			ALUOp<="10";
+			memWrite<= '0';
+			ALUSrc<='0';regWrite<='1';
+			jal<='0';jalr<='0';lui<='0';bne<= '0';blt<='0';bgt<='0';
 			
 		--others
 		else 
-			branch 		<= '0';
-			memRead 	<= '0';
-			memToReg	<= '0';
-			ALUOp		<= "00";
-			memWrite	<= '0';
-			ALUSrc	 	<= '0';
-			regWrite	<= '0';
-			jal		<= '0';
-			jalr		<= '0';
-			lui		<= '0';
-			bne		<= '0';
-			blt		<= '0';
-			bgt		<= '0';
+			branch 	<= 'X';
+			memRead 	<= 'X';
+			memToReg	<= 'X';
+			ALUOp		<= "XX";
+			memWrite	<= 'X';
+			ALUSrc	<= 'X';
+			regWrite	<= 'X';
+			jal		<= 'X';
+			jalr		<= 'X';
+			lui		<= 'X';
+			bne		<= 'X';
+			blt		<= 'X';
+			bgt		<= 'X';
 		end if;
 		
 	end process;

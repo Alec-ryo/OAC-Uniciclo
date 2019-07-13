@@ -2,7 +2,6 @@ library ieee;
 use ieee.std_logic_1164.all; 
 use ieee.numeric_std.all;
 use ieee.std_logic_unsigned.all; 
-use work.xregs_pkg.all;
 
 entity XREGS is
 	generic (WSIZE : natural := 32);
@@ -14,7 +13,8 @@ entity XREGS is
 end XREGS; 
 
 architecture behavioral of XREGS is
-	signal reg : registradores;	
+	type registradores is array (31 downto 0) of std_logic_vector(31 downto 0);
+	signal reg : registradores := (others=> (others => '0'));	
 begin		
 	proc_xregs: process (clk) begin
 		if rising_edge(clk) then
