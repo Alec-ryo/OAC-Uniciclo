@@ -162,7 +162,8 @@ begin
 	pcpath5 : genImm32 PORT MAP (instr => instrucao, imm32 => imediato);
 	pcpath6 : adder32 PORT MAP (a => pcout, b => imediato, ro => endJump);
 	pcpath7 : mux2x1 PORT MAP (a => PCmais4, b => endJump, e => faz_jump, ro => PCjalr);
-	pcpath8 : mux2x1 PORT MAP (a => PCjalr, b => endJalr, e => jalr, ro => PCend);
+	pcpath8 : adder32 PORT MAP (a => dado1, b => imediato, ro=>endJalr);
+	pcpath9 : mux2x1 PORT MAP (a => PCjalr, b => endJalr, e => jalr, ro => PCend);
 --========================================================--
 
 --==================Caminho de instrucoes=================--
@@ -179,11 +180,6 @@ begin
 	BEGIN
 		faz_jump <= jal or (branch and zero) or jalr;
 	END PROCESS; 
-	
-	process (jalr)
-	BEGIN
-		endJalr <= std_logic_vector(signed(imediato) + signed(dado1));
-	END PROCESS;
 	
 end behavioral;
 
