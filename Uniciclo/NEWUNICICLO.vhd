@@ -6,15 +6,15 @@ use work.rv_pkg.all;
 use work.imm_pkg.all;
 use work.xregs_pkg.all;
 
-entity UNICICLO_RV is
+entity NEWUNICICLO is
 	port (
 		clk		: in std_logic;
 		clk_mem	: in std_logic;
 		clr   	: in std_logic
 		);
-end UNICICLO_RV; 
+end NEWUNICICLO; 
 
-architecture behavioral of UNICICLO_RV is
+architecture behavioral of NEWUNICICLO is
 	
 	--declaracao de sinais
 	signal PCmais4 : std_logic_vector(31 downto 0) := X"00000000";
@@ -24,7 +24,6 @@ architecture behavioral of UNICICLO_RV is
 	signal instrucao : std_logic_vector(31 downto 0);
 	signal dado1 : std_logic_vector(31 downto 0);
 	signal dado2 : std_logic_vector(31 downto 0);
-	signal imm : std_logic_vector(31 downto 0);
 	signal saida_ULA : std_logic_vector(31 downto 0);
 	signal mem_to_reg : std_logic_vector(31 downto 0);
 	signal saida_mem : std_logic_vector(31 downto 0);
@@ -49,6 +48,14 @@ architecture behavioral of UNICICLO_RV is
 	signal blt: std_logic;
 	signal bgt: std_logic; 
 	signal zero_and_branch: std_logic;
+	signal faz_jump: std_logic;
+	signal muxULAmem_OU_PCmais4: std_logic_vector(31 downto 0);
+	signal saida_muxULAmem: std_logic_vector(31 downto 0);
+	signal saida_branchOUPCmais4: std_logic_vector(31 downto 0);
+	signal mux_jal_out: std_logic_vector(31 downto 0);
+	signal vai_reg: std_logic_vector(31 downto 0);
+	signal jal_or_jalr: std_logic;
+	signal resultado_zero: std_logic;
 	
 	component PC 
 		port (
@@ -151,25 +158,11 @@ begin
 	pcpath4 : control PORT MAP (a => instrucao(6 downto 0), funct3=>instrucao(14 downto 12), branch => branch, memRead => memRead, memToReg => memToReg, ALUOp => ALUOp, memWrite => memWrite, ALUSrc => ALUSrc, regWrite => regWrite, jal => jal, jalr => jalr, lui => lui, bne => bne, blt => blt, bgt => bgt);
 	pcpath5 : genImm32 PORT MAP (instr => instrucao, imm32 => imediato);
 	pcpath6 : adder32 PORT MAP (a => pcout, b => imediato, ro => endJump);
-	zero_and_branch <= zero and branch;
-	pcpath7 : mux2x1 PORT MAP (a => PCmais4, b => endJump, e => zero_and_branch, ro => PCend);
---========================================================--
-
---==================Caminho de instrucoes=================--
-	r1 : cntrULA PORT MAP(funct7=>instrucao(6 downto 0) ,funct3=>instrucao(14 downto 12), aluop=>ALUOp, aluctr=>cntrULA_ULA);
-	r2 : XREGS PORT MAP(clk=>clk_mem, wren=>regWrite, rst=>clr, rs1=>instrucao(19 downto 15), rs2=>instrucao(24 downto 20), rd=>instrucao(11 downto 7), data=>memOUula, ro1=>dado1, ro2=>dado2);
-	r3 : mux2x1 PORT MAP(a=>dado2,b=>imediato,e=>ALUSrc,ro=>rd2OUimm);
-	r4 : ULA_RV PORT MAP(opcode=>cntrULA_ULA, A=>dado1, B=>rd2OUimm, Z=>saida_ULA, zero=>zero);
-	r5 : memDados PORT MAP(address=>saida_ULA(9 downto 2), clock=>clk_mem, data=>dado2, wren=>memWrite, q=>saida_mem);
-	r6 : mux2x1 PORT MAP(a=>saida_ULA,b=>saida_mem,e=>memToReg,ro=>memOUula);
---========================================================--
 
 	--branch <= '0';
-
 	process (clk)
 	BEGIN
 	
 	END PROCESS; 
-	
 end behavioral;
 
