@@ -92,7 +92,7 @@ begin
 			elsif funct3 = "100" then
 				branch<='0';bne<='0'; blt<='1'; bgt<='0';
 			else --bgt
-				branch<='0';bne<='0'; blt<='0'; bgt<='1';
+				branch<='0';bne<='0'; blt<='0'; bgt<='1'; 
 			end if;
 			
 		-- lw ok

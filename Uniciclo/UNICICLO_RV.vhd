@@ -59,6 +59,7 @@ architecture behavioral of UNICICLO_RV is
 	signal vai_MuxDataJal: std_logic_vector(31 downto 0);
 	signal endJalr: std_logic_vector(31 downto 0);
 	signal PCjalr: std_logic_vector(31 downto 0);
+	signal ehMaior: std_logic;
 	
 	component PC 
 		port (
@@ -176,10 +177,19 @@ begin
 	i_MuxDataJal : mux2x1 PORT MAP(a=>vai_MuxDataJal,b=>PCmais4,e=>jal,ro=>vai_reg);
 --========================================================--
 
-	process (jal, jalr, zero, branch, bne)
+	process (jal, jalr, zero, branch, bne, blt, bgt)
 	BEGIN
-		faz_jump <= jal or (branch and zero) or jalr or (not(zero) and bne);
+		faz_jump <= jal or (branch and zero) or jalr or (not(zero) and bne) or (blt and saida_ULA(31)) or (bgt and ehMaior);
 	END PROCESS; 
+	
+	process (bgt)
+	BEGIN
+		if (signed(dado1) > signed(dado2)) then
+			ehMaior <= '1';
+		else 
+			ehMaior <= '0';
+		end if;
+	END PROCESS;
 	
 end behavioral;
 

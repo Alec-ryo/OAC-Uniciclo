@@ -61,7 +61,7 @@ process(funct7, funct3, aluop) begin
 						then aluctr <= SRA_OP;
 						else aluctr <= SRL_OP;
 						end if;
-					else 
+					else --operacao and como default pra ficar mais facil de depurar
 						aluctr <= AND_OP;
 					end if;
 	end case;
