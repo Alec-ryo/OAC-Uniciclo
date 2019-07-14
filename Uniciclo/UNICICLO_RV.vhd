@@ -18,14 +18,12 @@ architecture behavioral of UNICICLO_RV is
 	
 	--declaracao de sinais
 	signal PCmais4 : std_logic_vector(31 downto 0) := X"00000000";
-	signal PCfinal : std_logic_vector(31 downto 0) := X"00000000";
 	signal PCend : std_logic_vector(31 downto 0) := X"00000000";
 	signal pcout : std_logic_vector(31 downto 0);
 	signal instrucao : std_logic_vector(31 downto 0);
 	signal dado1 : std_logic_vector(31 downto 0);
 	signal dado2 : std_logic_vector(31 downto 0);
 	signal saida_ULA : std_logic_vector(31 downto 0);
-	signal mem_to_reg : std_logic_vector(31 downto 0);
 	signal saida_mem : std_logic_vector(31 downto 0);
 	signal imediato : std_logic_vector(31 downto 0);
 	signal endJump : std_logic_vector(31 downto 0);
@@ -38,24 +36,15 @@ architecture behavioral of UNICICLO_RV is
 	signal memWrite: std_logic;
 	signal ALUSrc: std_logic;
 	signal regWrite: std_logic;
-	signal soma4: std_logic_vector(31 downto 0);
 	signal rd2OUimm: std_logic_vector(31 downto 0);
-	signal memOUula: std_logic_vector(31 downto 0);
 	signal jal: std_logic;
 	signal jalr: std_logic;
 	signal lui: std_logic;
 	signal bne: std_logic;
 	signal blt: std_logic;
 	signal bgt: std_logic; 
-	signal zero_and_branch: std_logic;
 	signal faz_jump: std_logic;
-	signal muxULAmem_OU_PCmais4: std_logic_vector(31 downto 0);
-	signal saida_muxULAmem: std_logic_vector(31 downto 0);
-	signal saida_branchOUPCmais4: std_logic_vector(31 downto 0);
-	signal mux_jal_out: std_logic_vector(31 downto 0);
 	signal vai_reg: std_logic_vector(31 downto 0);
-	signal jal_or_jalr: std_logic;
-	signal resultado_zero: std_logic;
 	signal vai_MuxDataJal: std_logic_vector(31 downto 0);
 	signal endJalr: std_logic_vector(31 downto 0);
 	signal PCjalr: std_logic_vector(31 downto 0);
