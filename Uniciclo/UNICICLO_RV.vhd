@@ -42,7 +42,7 @@ architecture behavioral of UNICICLO_RV is
 	signal lui: std_logic;
 	signal bne: std_logic;
 	signal blt: std_logic;
-	signal bgt: std_logic; 
+	signal bge: std_logic; 
 	signal faz_jump: std_logic;
 	signal vai_reg: std_logic_vector(31 downto 0);
 	signal vai_MuxDataJal: std_logic_vector(31 downto 0);
@@ -129,7 +129,7 @@ architecture behavioral of UNICICLO_RV is
 				lui			: out std_logic;
 				bne			: out std_logic;
 				blt			: out std_logic;
-				bgt			: out std_logic
+				bge			: out std_logic
 		);
 	end component;
 	
@@ -148,7 +148,7 @@ begin
 	pcpath1 : PC PORT MAP (d => PCend, clr => clr, clk => clk, q => pcout);
 	pcpath2 : adder32 PORT MAP (a => pcout, b => X"00000004", ro=>PCmais4);
 	pcpath3 : memIns PORT MAP (address => pcout(9 downto 2), clock => clk_mem, data => X"00000000", wren => '0', q => instrucao);
-	pcpath4 : control PORT MAP (a => instrucao(6 downto 0), funct3=>instrucao(14 downto 12), branch => branch, memRead => memRead, memToReg => memToReg, ALUOp => ALUOp, memWrite => memWrite, ALUSrc => ALUSrc, regWrite => regWrite, jal => jal, jalr => jalr, lui => lui, bne => bne, blt => blt, bgt => bgt);
+	pcpath4 : control PORT MAP (a => instrucao(6 downto 0), funct3=>instrucao(14 downto 12), branch => branch, memRead => memRead, memToReg => memToReg, ALUOp => ALUOp, memWrite => memWrite, ALUSrc => ALUSrc, regWrite => regWrite, jal => jal, jalr => jalr, lui => lui, bne => bne, blt => blt, bge => bge);
 	pcpath5 : genImm32 PORT MAP (instr => instrucao, imm32 => imediato);
 	pcpath6 : adder32 PORT MAP (a => pcout, b => imediato, ro => endJump);
 	pcpath7 : mux2x1 PORT MAP (a => PCmais4, b => endJump, e => faz_jump, ro => PCjalr);
@@ -166,19 +166,10 @@ begin
 	i_MuxDataJal : mux2x1 PORT MAP(a=>vai_MuxDataJal,b=>PCmais4,e=>jal,ro=>vai_reg);
 --========================================================--
 
-	process (jal, jalr, zero, branch, bne, blt, bgt)
+	process (jal, jalr, zero, branch, bne, blt, bge)
 	BEGIN
-		faz_jump <= jal or (branch and zero) or jalr or (not(zero) and bne) or (blt and saida_ULA(31)) or (bgt and ehMaior);
+		faz_jump <= jal or (branch and zero) or jalr or (not(zero) and bne) or (blt and saida_ULA(31)) or (bge and not(saida_ULA(31)));
 	END PROCESS; 
-	
-	process (bgt)
-	BEGIN
-		if (signed(dado1) > signed(dado2)) then
-			ehMaior <= '1';
-		else 
-			ehMaior <= '0';
-		end if;
-	END PROCESS;
 	
 end behavioral;
 

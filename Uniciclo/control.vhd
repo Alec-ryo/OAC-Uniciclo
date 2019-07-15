@@ -19,7 +19,7 @@ entity control is
 			lui			: out std_logic;
 			bne			: out std_logic;
 			blt			: out std_logic;
-			bgt 			: out std_logic
+			bge 			: out std_logic
 	);
 end entity;
 
@@ -40,7 +40,7 @@ begin
 			lui		<= '1';
 			bne		<= '0';
 			blt		<= '0';
-			bgt		<= '0';
+			bge		<= '0';
 		
 		-- jal	
 		elsif a = "1101111" then 
@@ -56,7 +56,7 @@ begin
 			lui		<= '0';
 			bne		<= '0';
 			blt		<= '0';
-			bgt		<= '0';
+			bge		<= '0';
 			
 		-- jalr
 		elsif a = "1100111" then
@@ -72,7 +72,7 @@ begin
 			lui		<= '0';
 			bne		<= '0';
 			blt		<= '0';
-			bgt		<= '0';
+			bge		<= '0';
 			
 		-- BType
 		elsif a = "1100011" then
@@ -86,13 +86,13 @@ begin
 			jalr		<= '0';
 			lui		<= '0';
 			if funct3 = "000" then
-				branch<='1';bne<='0'; blt<='0'; bgt<='0';
+				branch<='1';bne<='0'; blt<='0'; bge<='0';
 			elsif funct3 = "001" then
-				branch<='0';bne<='1'; blt<='0'; bgt<='0';
+				branch<='0';bne<='1'; blt<='0'; bge<='0';
 			elsif funct3 = "100" then
-				branch<='0';bne<='0'; blt<='1'; bgt<='0';
-			else --bgt
-				branch<='0';bne<='0'; blt<='0'; bgt<='1'; 
+				branch<='0';bne<='0'; blt<='1'; bge<='0';
+			else --bge
+				branch<='0';bne<='0'; blt<='0'; bge<='1'; 
 			end if;
 			
 		-- lw ok
@@ -109,7 +109,7 @@ begin
 			lui		<= '0';
 			bne		<= '0';
 			blt		<= '0';
-			bgt		<= '0';
+			bge		<= '0';
 		
 		-- sw 
 		elsif a = "0100011" then
@@ -125,7 +125,7 @@ begin
 			lui		<= '0';
 			bne		<= '0';
 			blt		<= '0';
-			bgt		<= '0';
+			bge		<= '0';
 		
 		-- I ok
 		elsif a = "0010011" then
@@ -141,7 +141,7 @@ begin
 			lui		<= '0';
 			bne		<= '0';
 			blt		<= '0';
-			bgt		<= '0';
+			bge		<= '0';
 		
 		-- R ok
 		elsif a = "0110011" then
@@ -151,7 +151,7 @@ begin
 			ALUOp<="10";
 			memWrite<= '0';
 			ALUSrc<='0';regWrite<='1';
-			jal<='0';jalr<='0';lui<='0';bne<= '0';blt<='0';bgt<='0';
+			jal<='0';jalr<='0';lui<='0';bne<= '0';blt<='0';bge<='0';
 			
 		--others
 		else 
@@ -167,7 +167,7 @@ begin
 			lui		<= 'X';
 			bne		<= 'X';
 			blt		<= 'X';
-			bgt		<= 'X';
+			bge		<= 'X';
 		end if;
 		
 	end process;
